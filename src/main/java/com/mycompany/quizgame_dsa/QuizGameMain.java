@@ -8,7 +8,7 @@ package com.mycompany.quizgame_dsa;
  *
  * @author Hp
  */
-public class QuizGame_DSA {
+public class QuizGameMain {
 
     public static void main(String[] args) {
         System.out.println("Hello World!");
