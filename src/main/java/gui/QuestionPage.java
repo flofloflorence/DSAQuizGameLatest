@@ -1,0 +1,521 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
+package gui;
+import javax.swing.Timer;
+import java.awt.Color;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
+/**
+ *
+ * @author User
+ */
+public class QuestionPage extends javax.swing.JFrame {
+    
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(QuestionPage.class.getName());
+
+    private javax.swing.Timer timer; // Create a timer variable
+    private int timeLeft = 15; // Set your desired seconds here
+    /**
+     * Creates new form QuestionPage
+     */
+    public QuestionPage() {
+        initComponents();
+        NextQuestion.setVisible(false); // Ensure that "Next Question" button is invisible at first
+        startTimer();
+        
+        Color transparent = new Color(0, 0, 0, 0); // Define a completely transparent color (Red, Green, Blue, Alpha)
+
+        jScrollPane1.getViewport().setBackground(transparent); // Force the ScrollPane and Viewport to use this transparent color
+
+        jScrollPane1.getViewport().setOpaque(false); // Force the ScrollPane and Viewport to be opaque
+        
+        // --- TEMPORARY TESTING CODE (Question) ---
+        jTextPane1.setText("What is the time complexity of the binary search algorithm "
+                + "when applied to a sorted array of N elements? "
+                + "i love ucsi malaysia roti canai teh tarik in kuala lumpur its so fun how about you do u like it too");
+        
+        // Centering of the question in jTextPane1
+        StyledDocument doc = jTextPane1.getStyledDocument(); // Grab the internal document model of the jTextPane1
+
+        SimpleAttributeSet center = new SimpleAttributeSet(); // Define a "style" that has Center Alignment
+        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+
+        doc.setParagraphAttributes(0, doc.getLength(), center, false); // Apply this style to the entire paragraph
+        
+        jTextPane1.setCaretPosition(0); // Force the jTextPane1 to show the start of the question, if it's scrollable
+    
+        // --- TEMPORARY TESTING CODE (Multiple Choice) ---
+        // Set some sample text so we have a "Stack" to click on
+        jButton1.setText("Queue");
+        jButton2.setText("Stack"); // This will be the correct one!
+        jButton3.setText("Array");
+        jButton4.setText("Tree");
+        
+        // Force the buttons to be WHITE immediately when the program runs
+        jButton1.setBackground(java.awt.Color.WHITE);
+        jButton2.setBackground(java.awt.Color.WHITE);
+        jButton3.setBackground(java.awt.Color.WHITE);
+        jButton4.setBackground(java.awt.Color.WHITE);
+        
+        // Add the hover effect to all options
+        addHoverEffect(jButton1);
+        addHoverEffect(jButton2);
+        addHoverEffect(jButton3);
+        addHoverEffect(jButton4);
+    }
+    
+    // Method to handle the color of the buttons after either one of them is clicked, or when the time is up
+    private void handleButtonClick(javax.swing.JButton clickedButton) {
+    // Stop the timer immediately when the user choose an option
+    if (timer != null) {
+        timer.stop();
+    }
+
+    // Define a dummy answer for testing (Later this will come from your Question object)
+    String dummyCorrectAnswer = "Stack"; 
+    
+    // Get the text from the button the user clicked
+    String selectedAnswer = clickedButton.getText();
+
+    // CHECK: Is it the chosen option CORRECT?
+    if (selectedAnswer.equals(dummyCorrectAnswer)) {
+        // CORRECT: Turn the clicked button GREEN
+        clickedButton.setBackground(java.awt.Color.GREEN);
+    } else {
+        // WRONG: Turn the clicked button RED
+        clickedButton.setBackground(java.awt.Color.RED);
+        
+        // AUTO-CORRECT: Find the right answer and turn it GREEN (applicable if user has not answered when the time is up)
+        highlightCorrectAnswer(dummyCorrectAnswer);
+    }
+
+    // Lock all buttons so they cannot be clicked again (applicable if the user has clicked on an option before time's up)
+    jButton1.setEnabled(false);
+    jButton2.setEnabled(false);
+    jButton3.setEnabled(false);
+    jButton4.setEnabled(false);
+    
+    // Show "Next Question" button after user has chosen an option
+    NextQuestion.setVisible(true);
+    }
+
+    // Helper method to find the correct button and color it GREEN
+    private void highlightCorrectAnswer(String correctAnswer) {
+        // Check all 4 buttons to see which one has the right text
+        if (jButton1.getText().equals(correctAnswer)) jButton1.setBackground(java.awt.Color.GREEN);
+        else if (jButton2.getText().equals(correctAnswer)) jButton2.setBackground(java.awt.Color.GREEN);
+        else if (jButton3.getText().equals(correctAnswer)) jButton3.setBackground(java.awt.Color.GREEN);
+        else if (jButton4.getText().equals(correctAnswer)) jButton4.setBackground(java.awt.Color.GREEN);
+    }
+    
+    // Method to add hover effect to all options' buttons
+    private void addHoverEffect(javax.swing.JButton btn) {
+    // Create a "Mouse Adapter" to listen for hover events
+    btn.addMouseListener(new java.awt.event.MouseAdapter() {
+        
+        // When the mouse enters the button area...
+        @Override
+        public void mouseEntered(java.awt.event.MouseEvent evt) {
+            // Only change color if the button is still active (not locked)
+            if (btn.isEnabled()) {
+                // Change to a "Highlight" color (Lavender)
+                btn.setBackground(new java.awt.Color(230, 230, 250)); 
+            }
+        }
+
+        // When the mouse leaves the button area...
+        @Override
+        public void mouseExited(java.awt.event.MouseEvent evt) {
+            // Only change back if the button is still active
+            if (btn.isEnabled()) {
+                // Change back to the default color (White)
+                btn.setBackground(java.awt.Color.WHITE);
+            }
+    }
+    });
+    }
+    
+    // Method to create a countdown timer
+    private void startTimer() {
+    // Reset the time for the new question
+    timeLeft = 15; 
+    jLabelTimer.setText("Timer :  " + timeLeft + " s");
+    jLabelTimer.setForeground(new java.awt.Color(51, 153, 0));
+
+    // Create the timer logic
+    timer = new javax.swing.Timer(1000, new java.awt.event.ActionListener() {
+        @Override
+        public void actionPerformed(java.awt.event.ActionEvent e) {
+            timeLeft--;
+            jLabelTimer.setText("Timer :  " + timeLeft + " s");
+
+            // Timer turns RED when running out of time (last 5 seconds)
+            if (timeLeft <= 5) {
+                jLabelTimer.setForeground(java.awt.Color.RED);
+            }
+
+            // Time's up logic
+            if (timeLeft <= 0) {
+                timer.stop();
+                handleTimesUp();
+            }
+        }
+    });
+
+    // Start the countdown timer
+    timer.start();
+    }
+    
+    // Helper method for handling what happens when the time is up
+    private void handleTimesUp() {
+    // Lock all buttons (prevent from clicking)
+    jButton1.setEnabled(false);
+    jButton2.setEnabled(false);
+    jButton3.setEnabled(false);
+    jButton4.setEnabled(false);
+    
+    // Show the "Next Question" button
+    NextQuestion.setVisible(true);
+
+    // Show the correct answer
+    highlightCorrectAnswer("Stack"); 
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
+
+        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabelTimer = new javax.swing.JLabel();
+        CurrentQuesNum = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        TotalQuesNum = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextPane1 = new javax.swing.JTextPane();
+        jPanel5 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
+        NextQuestion = new javax.swing.JButton();
+        Return = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("QUIZ-ING");
+        setPreferredSize(new java.awt.Dimension(700, 650));
+
+        jPanel1.setBackground(new java.awt.Color(237, 231, 246));
+        jPanel1.setPreferredSize(new java.awt.Dimension(700, 700));
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
+        jPanel2.setOpaque(false);
+        jPanel2.setPreferredSize(new java.awt.Dimension(714, 80));
+
+        jLabel1.setFont(new java.awt.Font("Noto Sans SC", 1, 15)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(44, 62, 80));
+        jLabel1.setText("Question");
+
+        jLabelTimer.setFont(new java.awt.Font("Noto Sans SC", 1, 15)); // NOI18N
+        jLabelTimer.setForeground(new java.awt.Color(44, 62, 80));
+        jLabelTimer.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabelTimer.setText("Timer :   10 s");
+
+        CurrentQuesNum.setFont(new java.awt.Font("Noto Sans SC", 1, 15)); // NOI18N
+        CurrentQuesNum.setForeground(new java.awt.Color(44, 62, 80));
+        CurrentQuesNum.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        CurrentQuesNum.setText("1");
+
+        jLabel3.setFont(new java.awt.Font("Noto Sans SC", 1, 15)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(44, 62, 80));
+        jLabel3.setText("of");
+
+        TotalQuesNum.setFont(new java.awt.Font("Noto Sans SC", 1, 15)); // NOI18N
+        TotalQuesNum.setForeground(new java.awt.Color(44, 62, 80));
+        TotalQuesNum.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        TotalQuesNum.setText("8");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(64, 64, 64)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(3, 3, 3)
+                .addComponent(CurrentQuesNum, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(3, 3, 3)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(3, 3, 3)
+                .addComponent(TotalQuesNum, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 266, Short.MAX_VALUE)
+                .addComponent(jLabelTimer, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(65, 65, 65))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap(40, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelTimer, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(CurrentQuesNum, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TotalQuesNum, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+
+        jLabel1.getAccessibleContext().setAccessibleName("jLabel1");
+        jLabelTimer.getAccessibleContext().setAccessibleName("jLabelTimer");
+        CurrentQuesNum.getAccessibleContext().setAccessibleName("CurrentQuesNum");
+        TotalQuesNum.getAccessibleContext().setAccessibleName("TotalQuesNum");
+
+        jPanel1.add(jPanel2, java.awt.BorderLayout.NORTH);
+        jPanel2.getAccessibleContext().setAccessibleName("jPanel2");
+
+        jPanel3.setOpaque(false);
+        jPanel3.setPreferredSize(new java.awt.Dimension(600, 300));
+        jPanel3.setLayout(new java.awt.GridBagLayout());
+
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createCompoundBorder(new javax.swing.border.LineBorder(new java.awt.Color(44, 62, 80), 2, true), javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+        jScrollPane1.setToolTipText("");
+        jScrollPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jScrollPane1.setOpaque(false);
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(162, 49));
+
+        jTextPane1.setEditable(false);
+        jTextPane1.setBorder(null);
+        jTextPane1.setFont(new java.awt.Font("Noto Sans SC", 1, 24)); // NOI18N
+        jTextPane1.setForeground(new java.awt.Color(74, 63, 107));
+        jTextPane1.setFocusable(false);
+        jTextPane1.setOpaque(false);
+        jScrollPane1.setViewportView(jTextPane1);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.ipadx = 500;
+        gridBagConstraints.ipady = 100;
+        gridBagConstraints.insets = new java.awt.Insets(0, 50, 30, 50);
+        jPanel3.add(jScrollPane1, gridBagConstraints);
+
+        jPanel5.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 50, 10, 50));
+        jPanel5.setOpaque(false);
+        jPanel5.setLayout(new java.awt.GridLayout(4, 1, 0, 10));
+
+        jButton1.setFont(new java.awt.Font("Noto Sans SC", 1, 12)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(74, 63, 107));
+        jButton1.setText("Queue");
+        jButton1.setBorder(javax.swing.BorderFactory.createCompoundBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED), javax.swing.BorderFactory.createEmptyBorder(5, 15, 5, 15)));
+        jButton1.setFocusPainted(false);
+        jButton1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jButton1.setIconTextGap(10);
+        jButton1.setOpaque(true);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel5.add(jButton1);
+
+        jButton2.setFont(new java.awt.Font("Noto Sans SC", 1, 12)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(74, 63, 107));
+        jButton2.setText("Stack");
+        jButton2.setBorder(javax.swing.BorderFactory.createCompoundBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED), javax.swing.BorderFactory.createEmptyBorder(5, 15, 5, 15)));
+        jButton2.setFocusPainted(false);
+        jButton2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jButton2.setIconTextGap(10);
+        jButton2.setOpaque(true);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel5.add(jButton2);
+
+        jButton3.setFont(new java.awt.Font("Noto Sans SC", 1, 12)); // NOI18N
+        jButton3.setForeground(new java.awt.Color(74, 63, 107));
+        jButton3.setText("Array");
+        jButton3.setBorder(javax.swing.BorderFactory.createCompoundBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED), javax.swing.BorderFactory.createEmptyBorder(5, 15, 5, 15)));
+        jButton3.setFocusPainted(false);
+        jButton3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jButton3.setIconTextGap(10);
+        jButton3.setOpaque(true);
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        jPanel5.add(jButton3);
+
+        jButton4.setFont(new java.awt.Font("Noto Sans SC", 1, 12)); // NOI18N
+        jButton4.setForeground(new java.awt.Color(74, 63, 107));
+        jButton4.setText("Tree");
+        jButton4.setBorder(javax.swing.BorderFactory.createCompoundBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED), javax.swing.BorderFactory.createEmptyBorder(5, 15, 5, 15)));
+        jButton4.setFocusPainted(false);
+        jButton4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jButton4.setIconTextGap(10);
+        jButton4.setOpaque(true);
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        jPanel5.add(jButton4);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipadx = 500;
+        gridBagConstraints.ipady = 80;
+        jPanel3.add(jPanel5, gridBagConstraints);
+
+        jPanel1.add(jPanel3, java.awt.BorderLayout.CENTER);
+        jPanel3.getAccessibleContext().setAccessibleName("jPanel3");
+
+        jPanel4.setOpaque(false);
+
+        NextQuestion.setBackground(new java.awt.Color(212, 228, 255));
+        NextQuestion.setFont(new java.awt.Font("Noto Sans SC", 1, 14)); // NOI18N
+        NextQuestion.setForeground(new java.awt.Color(74, 63, 107));
+        NextQuestion.setText("Next Question");
+        NextQuestion.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        NextQuestion.setFocusPainted(false);
+        NextQuestion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NextQuestionActionPerformed(evt);
+            }
+        });
+
+        Return.setBackground(new java.awt.Color(212, 228, 255));
+        Return.setFont(new java.awt.Font("Noto Sans SC", 1, 14)); // NOI18N
+        Return.setForeground(new java.awt.Color(74, 63, 107));
+        Return.setText("Return to Main Page");
+        Return.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        Return.setFocusPainted(false);
+        Return.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ReturnActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(467, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Return, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(NextQuestion, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(83, 83, 83))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap(20, Short.MAX_VALUE)
+                .addComponent(NextQuestion, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(Return, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30))
+        );
+
+        NextQuestion.getAccessibleContext().setAccessibleName("NextQuestion");
+        Return.getAccessibleContext().setAccessibleName("Return");
+
+        jPanel1.add(jPanel4, java.awt.BorderLayout.SOUTH);
+        jPanel4.getAccessibleContext().setAccessibleName("jPanel4");
+
+        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
+
+        pack();
+        setLocationRelativeTo(null);
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        handleButtonClick(jButton1);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        handleButtonClick(jButton2);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        handleButtonClick(jButton3);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        handleButtonClick(jButton4);
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void NextQuestionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextQuestionActionPerformed
+        FinalScorePage FinalScorePageFrame = new FinalScorePage();
+        FinalScorePageFrame.setVisible(true);
+        FinalScorePageFrame.pack();
+        this.dispose();
+    }//GEN-LAST:event_NextQuestionActionPerformed
+
+    private void ReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReturnActionPerformed
+        StartPage StartPageFrame = new StartPage();
+        StartPageFrame.setVisible(true);
+        StartPageFrame.pack();
+        this.dispose();
+    }//GEN-LAST:event_ReturnActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
+//            logger.log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(() -> new QuestionPage().setVisible(true));
+//        
+//    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel CurrentQuesNum;
+    private javax.swing.JButton NextQuestion;
+    private javax.swing.JButton Return;
+    private javax.swing.JLabel TotalQuesNum;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabelTimer;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextPane jTextPane1;
+    // End of variables declaration//GEN-END:variables
+}
