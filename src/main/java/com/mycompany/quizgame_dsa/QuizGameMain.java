@@ -4,6 +4,10 @@
 
 package com.mycompany.quizgame_dsa;
 
+import javax.swing.SwingUtilities;
+//import analysis.PerformanceAnalyzer;
+import gui.StartPage;
+
 /**
  *
  * @author Hp
@@ -11,6 +15,12 @@ package com.mycompany.quizgame_dsa;
 public class QuizGameMain {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+         // Run performance analysis once at startup
+//        PerformanceAnalyzer.runAllTests();
+
+        // Start GUI on Event Dispatch Thread
+        SwingUtilities.invokeLater(() -> {
+            new StartPage().setVisible(true);
+        });
     }
 }
