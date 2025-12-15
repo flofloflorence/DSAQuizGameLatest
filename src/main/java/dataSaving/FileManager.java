@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dataSaving;
 
 import model.Question;
@@ -10,53 +6,51 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-/**
- *
- * @author Hp
- */
-
 public class FileManager {
+    
+    // File names
     public static final String QUESTIONS_FILE = "questions.txt";
     public static final String LEADERBOARD_FILE = "leaderboard.txt";
     public static final String ANALYSIS_FILE = "analysis.txt";
 
+    // 1. Load Questions (The Correct New Version)
     public static List<Question> loadQuestions() {
-        File f = new File(QUESTIONS_FILE);
-        if (!f.exists()) {
-            System.out.println("questions.txt not found. Loading default questions.");
-            return getDefaultQuestions();
-        }
-
         List<Question> list = new ArrayList<>();
+        File f = new File(QUESTIONS_FILE);
+
+        // If file doesn't exist, just return the empty list
+        if (!f.exists()) {
+            System.out.println("questions.txt not found.");
+            return list; 
+        }
 
         try (BufferedReader br = new BufferedReader(new FileReader(f))) {
             String line;
-
             while ((line = br.readLine()) != null) {
-                String[] p = line.split(";");
+                // Split by semicolon
+                String[] p = line.split(";"); 
 
+                // We expect 6 parts: Question + 4 Options + Answer
                 if (p.length == 6) {
-                    list.add(new Question(p[0], p[1], p[2], p[3], p[4],
-                            Integer.parseInt(p[5].trim())));
+                    Question q = new Question(
+                        p[0].trim(), // Question Text
+                        p[1].trim(), // Option A
+                        p[2].trim(), // Option B
+                        p[3].trim(), // Option C
+                        p[4].trim(), // Option D
+                        p[5].trim()  // Correct Answer (String)
+                    );
+                    list.add(q);
                 }
             }
         } catch (Exception e) {
-            System.out.println("Error reading file. Using default questions.");
-            return getDefaultQuestions();
+            System.out.println("Error reading file: " + e.getMessage());
         }
-
-        return list.isEmpty() ? getDefaultQuestions() : list;
-    }
-
-    private static List<Question> getDefaultQuestions() {
-        List<Question> list = new ArrayList<>();
-        list.add(new Question("Which data structure uses FIFO?", "Stack", "Queue", "Tree", "Graph", 2));
-        list.add(new Question("Which DS uses LIFO?", "Queue", "Graph", "Stack", "Array", 3));
-        list.add(new Question("Binary search complexity?", "O(n)", "O(n log n)", "O(log n)", "O(1)", 3));
-        list.add(new Question("Which is non-linear?", "Array", "Queue", "Stack", "Tree", 4));
+        
         return list;
     }
 
+    // 2. Leaderboard - Write Score
     public static void appendLeaderboard(String name, int score, int total) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(LEADERBOARD_FILE, true))) {
             String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
@@ -67,6 +61,7 @@ public class FileManager {
         }
     }
 
+    // 3. Leaderboard - Read Scores
     public static List<String> readLeaderboard() {
         List<String> lines = new ArrayList<>();
         File f = new File(LEADERBOARD_FILE);
@@ -83,6 +78,7 @@ public class FileManager {
         return lines;
     }
 
+    // 4. Analysis
     public static void appendAnalysis(String text) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(ANALYSIS_FILE, true))) {
             bw.write(text);

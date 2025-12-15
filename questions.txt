@@ -1,0 +1,10 @@
+An examples of dynamic data structure is:;Array;Stack;Tree;Graph;Stack
+An example of non-linear data structure is:;Tree;Stack;Queue;Linked List;Tree
+The process of visiting every element of a data structure at least once;Traversing;Searching;Insertion;Deletion;Traversing
+A way to classify types of data;Data;Data Item;Data Object;Data Type;Data Type
+What data structure uses LIFO?;Stack;Queue;Linked List;Array;Stack
+What data structure uses FIFO?;Stack;Queue;Linked List;Array;Queue
+What does the peek() method do when called on a stack data structure?;It removes the top element from the stack.;It returns the top element of the stack without removing it.;It checks if the stack is empty.;It adds a new element to the top of the stack.;It returns the top element of the stack without removing it.
+What is a linked list?;A data structure made up of nodes that contain a value and a reference to the next node.;A collection of elements with fixed memory locations.;A type of array with dynamic size.;A data structure that only stores numeric values.;A data structure made up of nodes that contain a value and a reference to the next node.
+Which choice below correctly orders growth order functions from slowest-growing to fastest-growing?;O(log n) → O(n^2) → O(n log n) → O(2n);O(n log n) → O(n^2) → O(2n) → O(log n);O(log n) → O(n log n) → O(2n) → O(n^2);O(log n) → O(n log n) → O(n^2) → O(2n);O(log n) → O(n log n) → O(n^2) → O(2n)
+Given the array arr = [10, 20, 30, 40, 50], what value does arr[2] access?10;20;30;40;30

@@ -46,7 +46,6 @@ public class StartPage extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("WELCOME TO DALGOQUEST");
-        setPreferredSize(new java.awt.Dimension(600, 750));
 
         jPanel1.setBackground(new java.awt.Color(237, 231, 246));
         jPanel1.setPreferredSize(new java.awt.Dimension(600, 750));
@@ -186,16 +185,14 @@ public class StartPage extends javax.swing.JFrame {
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(110, Short.MAX_VALUE))
+                .addContainerGap(108, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 65, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -209,39 +206,27 @@ public class StartPage extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-    QuestionQueue queue = new QuestionQueue(5);
+    
+        java.util.List<model.Question> qList = dataSaving.FileManager.loadQuestions();
 
-    queue.enqueue(new Question(
-        "What is the time complexity of binary search?",
-        "O(n)",
-        "O(log n)",
-        "O(n^2)",
-        "O(1)",
-        1
-    ));
+        if (qList.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Error: No questions found in questions.txt!");
+            return;
+        }
 
-    queue.enqueue(new Question(
-        "Which data structure follows FIFO?",
-        "Stack",
-        "Tree",
-        "Queue",
-        "Graph",
-        2
-    ));
-
-    queue.enqueue(new Question(
-        "Which data structure uses LIFO?",
-        "Queue",
-        "Stack",
-        "Array",
-        "Linked List",
-        1
-    ));
-
-    QuestionPage qp = new QuestionPage(queue);
-    qp.setVisible(true);
-    qp.pack();
-    this.dispose();
+        structure.QuestionQueue queue = new structure.QuestionQueue(qList.size() + 10); 
+        
+        for (model.Question q : qList) {
+            queue.enqueue(q);
+        }
+        
+        QuestionPage qp = new QuestionPage(queue);
+        
+        // OPTIONAL: If your QuestionPage has a 'setUsername' method, call it here.
+        // qp.setUsername(name); 
+        
+        qp.setVisible(true);
+        this.dispose(); // Close the Start Page
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
