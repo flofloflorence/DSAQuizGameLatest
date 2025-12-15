@@ -1,13 +1,13 @@
 
 package com.mycompany.quizgame_dsa;
-import gui.StartPage;
+import gui.LoginPage;
 public class QuizGameMain
 {
 
     public static void main(String[] args) 
     {
         java.awt.EventQueue.invokeLater(() -> {
-            new StartPage().setVisible(true);
+            new LoginPage().setVisible(true);
         });
 
     }
