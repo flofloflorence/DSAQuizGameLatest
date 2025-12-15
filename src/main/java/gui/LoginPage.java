@@ -197,7 +197,24 @@ public class LoginPage extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // Need to change this code to show a pop-up window informing "Login is successful!"
         // Then only after clicking the "Ok" button, will the Start Page be shown
-        StartPage start = new StartPage();
+        String username = jTextField1.getText().trim();
+        if (username.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(
+        this,
+        "Please enter your username",
+        "Error",
+        javax.swing.JOptionPane.ERROR_MESSAGE
+         );
+        return;
+        }
+        javax.swing.JOptionPane.showMessageDialog(
+        this,
+        "Login successful!",
+        "Welcome",
+        javax.swing.JOptionPane.INFORMATION_MESSAGE
+        );
+        
+        StartPage start = new StartPage(username);
         start.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed

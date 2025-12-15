@@ -17,7 +17,9 @@ public class StartPage extends javax.swing.JFrame {
     /**
      * Creates new form StartPage
      */
-    public StartPage() {
+    private String username;
+    public StartPage(String username) {
+        this.username = username;
         initComponents();
     }
 
@@ -220,7 +222,7 @@ public class StartPage extends javax.swing.JFrame {
             queue.enqueue(q);
         }
         
-        QuestionPage qp = new QuestionPage(queue);
+        QuestionPage qp = new QuestionPage(queue, username);
         
         // OPTIONAL: If your QuestionPage has a 'setUsername' method, call it here.
         // qp.setUsername(name); 

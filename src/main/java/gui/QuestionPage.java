@@ -10,7 +10,8 @@ import structure.AnswerStack;
 import model.Question;
 
 public class QuestionPage extends javax.swing.JFrame {
-
+    
+    private String username;
     private final QuestionQueue questionQueue;
     private Question currentQuestion;
     private AnswerStack answerStack;
@@ -21,8 +22,9 @@ public class QuestionPage extends javax.swing.JFrame {
     private javax.swing.Timer timer;
     private int timeLeft = 15;
 
-    public QuestionPage(QuestionQueue questionQueue)
+    public QuestionPage(QuestionQueue questionQueue, String username)
     {
+        this.username = username;
         this.questionQueue = questionQueue;
         this.answerStack = new AnswerStack(20);
         this.totalQuestions = questionQueue.size();
@@ -52,7 +54,7 @@ public class QuestionPage extends javax.swing.JFrame {
         currentQuestion = questionQueue.dequeue();
         if (currentQuestion == null) 
         {
-            new FinalScorePage(score, totalQuestions).setVisible(true);
+            new FinalScorePage(username,score, totalQuestions).setVisible(true);
             dispose();
             return;
         }
@@ -488,7 +490,7 @@ public class QuestionPage extends javax.swing.JFrame {
     }//GEN-LAST:event_NextQuestionActionPerformed
 
     private void ReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReturnActionPerformed
-        StartPage start = new StartPage();
+        StartPage start = new StartPage(username);
         start.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_ReturnActionPerformed

@@ -6,9 +6,12 @@ import structure.QuestionQueue;
 
 public class FinalScorePage extends javax.swing.JFrame 
 {
-    public FinalScorePage(int score, int total) 
+    private String username;
+    public FinalScorePage(String username, int score, int total) 
     {
+        this.username = username;
         initComponents();
+        
         TotalScore.setText(score + " / " + total);
         int percentage = (total == 0) ? 0 : (int)((score * 100.0) / total);
         TotalPercentage.setText("(" + percentage + "%)");
@@ -43,10 +46,7 @@ public class FinalScorePage extends javax.swing.JFrame
         jLabel1.setFont(new java.awt.Font("Century Gothic", 1, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(74, 63, 107));
         jLabel1.setText("Misson Accomplished!");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.insets = new java.awt.Insets(30, 0, 0, 0);
-        jPanel1.add(jLabel1, gridBagConstraints);
+        jPanel1.add(jLabel1, new java.awt.GridBagConstraints());
 
         jLabel2.setFont(new java.awt.Font("Noto Sans SC", 1, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(44, 62, 80));
@@ -73,9 +73,9 @@ public class FinalScorePage extends javax.swing.JFrame
 
         TotalScore.setFont(new java.awt.Font("Noto Sans SC", 0, 18)); // NOI18N
         TotalScore.setForeground(new java.awt.Color(44, 62, 80));
-        TotalScore.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        TotalScore.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         TotalScore.setText("8/10");
-        TotalScore.setPreferredSize(new java.awt.Dimension(40, 35));
+        TotalScore.setPreferredSize(new java.awt.Dimension(50, 35));
         jPanel2.add(TotalScore);
         TotalScore.getAccessibleContext().setAccessibleName("TotalScore");
 
@@ -150,7 +150,7 @@ public class FinalScorePage extends javax.swing.JFrame
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        new StartPage().setVisible(true);
+        new StartPage(username).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
