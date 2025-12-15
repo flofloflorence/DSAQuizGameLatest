@@ -11,7 +11,7 @@ public class FileManager {
     // File names
     public static final String QUESTIONS_FILE = "questions.txt";
     public static final String LEADERBOARD_FILE = "leaderboard.txt";
-    public static final String ANALYSIS_FILE = "analysis.txt";
+    public static final String PERFORMANCE_FILE = "performance.txt";
 
     // 1. Load Questions (The Correct New Version)
     public static List<Question> loadQuestions() {
@@ -78,13 +78,12 @@ public class FileManager {
         return lines;
     }
 
-    // 4. Analysis
-    public static void appendAnalysis(String text) {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(ANALYSIS_FILE, true))) {
-            bw.write(text);
-            bw.newLine();
+    // 4. Analysis performance
+    public static void savePerformance(String structureName, int count, long addTimeNs, long removeTimeNs) {
+        try (FileWriter fw = new FileWriter(PERFORMANCE_FILE, true)) {
+            fw.write(LocalDateTime.now() + ", " + structureName + ", " + count + ", add = " + addTimeNs + "ns, remove = " + removeTimeNs + "ns\n");
         } catch (IOException e) {
-            System.out.println("Unable to write analysis.");
+            System.out.println("Unable to save performance.");
         }
     }
 }

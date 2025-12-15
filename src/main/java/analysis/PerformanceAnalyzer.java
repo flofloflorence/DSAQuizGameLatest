@@ -5,8 +5,10 @@
 package analysis;
 
 import model.Question;
+import model.User;
 import structure.QuestionQueue;
 import structure.AnswerStack;
+import dataSaving.FileManager;
 
 /**
  *
@@ -14,35 +16,72 @@ import structure.AnswerStack;
  */
 
 public class PerformanceAnalyzer {
-    public static long timeAddQueue(int n) {
-        QuestionQueue q = new QuestionQueue(n + 10);
-        long start = System.nanoTime();
-        for (int i = 0; i < n; i++)
-            q.enqueue(new Question("U" + i, "", "", "", "", "1"));
-        return (System.nanoTime() - start)/ 1_000_000;
+    // Run all required tests (call this once, e.g. from a menu button)
+    public static void runAllTests() {
+        testStack(100);
+        testStack(150);
+        testQueue(100);
+        testQueue(150);
     }
 
-    public static long timeRemoveQueue(int n) {
-        QuestionQueue q = new QuestionQueue(n + 10);
-        for (int i = 0; i < n; i++)
-            q.enqueue(new Question("U" + i, "", "", "", "", "1"));
-        long start = System.nanoTime();
-        for (int i = 0; i < n; i++) q.dequeue();
-        return (System.nanoTime() - start)/ 1_000_000;
+    // Measure add/remove for AnswerStack using User objects
+    private static void testStack(int count) {
+        AnswerStack stack = new AnswerStack(count);
+        User[] users = new User[count];
+        // fill the array with N diff users
+        for (int i = 0; i < count; i++) {
+            users[i] = new User("User" + i);
+        }
+
+        // measure add users to the stack
+        long startAdd = System.nanoTime();
+        for (int i = 0; i < count; i++) {
+            stack.push(users[i].getUsername()); // store username on the stack
+        }
+        long endAdd = System.nanoTime();
+
+        // measure remove users from the stack
+        long startRemove = System.nanoTime();
+        for (int i = 0; i < count; i++) {
+            stack.pop();
+        }
+        long endRemove = System.nanoTime();
+
+        // cal elapsed time
+        long addTimeNs = endAdd - startAdd; // total time to push N usernames to the stack
+        long removeTimeNs = endRemove - startRemove; // total time to remove N username from the stack
+
+        System.out.println("Stack - " + count + " users: add = " + addTimeNs + "ns, remove = " + removeTimeNs + "ns");
+
+        FileManager.savePerformance("Stack", count, addTimeNs, removeTimeNs);
     }
 
-    public static long timeAddStack(int n) {
-        AnswerStack s = new AnswerStack(n + 10);
-        long start = System.nanoTime();
-        for (int i = 0; i < n; i++) s.push("User" + i);
-        return (System.nanoTime() - start)/ 1_000_000;
-    }
+    // Measure add/remove for QuestionQueue using User objects
+    private static void testQueue(int count) {
+        QuestionQueue queue = new QuestionQueue(count);
+        User[] users = new User[count];
+        for (int i = 0; i < count; i++) {
+            users[i] = new User("User" + i);
+        }
 
-    public static long timeRemoveStack(int n) {
-        AnswerStack s = new AnswerStack(n + 10);
-        for (int i = 0; i < n; i++) s.push("User" + i);
-        long start = System.nanoTime();
-        for (int i = 0; i < n; i++) s.pop();
-        return (System.nanoTime() - start)/ 1_000_000;
+        long startAdd = System.nanoTime();
+        for (int i = 0; i < count; i++) {
+            Question userQ = new Question(users[i].getUsername(), "", "", "", "", "");
+            queue.enqueue(userQ);
+        }
+        long endAdd = System.nanoTime();
+
+        long startRemove = System.nanoTime();
+        for (int i = 0; i < count; i++) {
+            queue.dequeue();
+        }
+        long endRemove = System.nanoTime();
+
+        long addTimeNs = endAdd - startAdd;
+        long removeTimeNs = endRemove - startRemove;
+
+        System.out.println("Queue - " + count + " users: add = " + addTimeNs + "ns, remove = " + removeTimeNs + "ns");
+
+        FileManager.savePerformance("Queue", count, addTimeNs, removeTimeNs);
     }
 }
