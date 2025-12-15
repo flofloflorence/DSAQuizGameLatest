@@ -422,7 +422,7 @@ public class QuestionPage extends javax.swing.JFrame {
             }
         });
 
-        Return.setBackground(new java.awt.Color(212, 228, 255));
+        Return.setBackground(new java.awt.Color(255, 183, 197));
         Return.setFont(new java.awt.Font("Noto Sans SC", 1, 14)); // NOI18N
         Return.setForeground(new java.awt.Color(74, 63, 107));
         Return.setText("Return to Main Page");
