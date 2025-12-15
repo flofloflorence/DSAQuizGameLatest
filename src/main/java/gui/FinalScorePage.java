@@ -100,9 +100,11 @@ public class FinalScorePage extends javax.swing.JFrame
         jPanel3.setLayout(new java.awt.GridLayout(2, 2, 10, 10));
 
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clap clap.jpg"))); // NOI18N
         jPanel3.add(jLabel6);
 
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/never give up.jpg"))); // NOI18N
         jPanel3.add(jLabel8);
 
         jLabel7.setFont(new java.awt.Font("Noto Sans SC", 1, 18)); // NOI18N

@@ -27,13 +27,28 @@ public class QuestionPage extends javax.swing.JFrame {
         this.answerStack = new AnswerStack(20);
         this.totalQuestions = questionQueue.size();
         initComponents();
+        Color transparent = new Color(0, 0, 0, 0); // Define a completely transparent color (Red, Green, Blue, Alpha)
+        jScrollPane1.getViewport().setBackground(transparent); // Force the ScrollPane and Viewport to use this transparent color
+        jScrollPane1.getViewport().setOpaque(false); // Force the ScrollPane and Viewport to be opaque
+        // Centering of the question in jTextPane1
+        StyledDocument doc = jTextPane1.getStyledDocument(); // Grab the internal document model of the jTextPane1
+        SimpleAttributeSet center = new SimpleAttributeSet(); // Define a "style" that has Center Alignment
+        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+        doc.setParagraphAttributes(0, doc.getLength(), center, false); // Apply this style to the entire paragraph
+        jTextPane1.setCaretPosition(0); // Force the jTextPane1 to show the start of the question, if it's scrollable
+        addHoverEffect(jButton1);
+        addHoverEffect(jButton2);
+        addHoverEffect(jButton3);
+        addHoverEffect(jButton4);
+        NextQuestion.setVisible(false); // Ensure that "Next Question" button is invisible at first
         loadNextQuestion();
-  
     }
 
     /* ===================== CORE LOGIC ===================== */
     private void loadNextQuestion() 
     {
+        NextQuestion.setVisible(false); // Hide the Next Question button for every question at first
+        
         currentQuestion = questionQueue.dequeue();
         if (currentQuestion == null) 
         {
@@ -95,10 +110,14 @@ public class QuestionPage extends javax.swing.JFrame {
             highlightCorrectAnswer(correctAnswer);
             
         }
+        
         jButton1.setEnabled(false);
         jButton2.setEnabled(false);
         jButton3.setEnabled(false);
         jButton4.setEnabled(false);
+        
+        // Show "Next Question" button after user has chosen an option
+        NextQuestion.setVisible(true);
     }
 
     private void highlightCorrectAnswer(String correctAnswer)
@@ -142,12 +161,34 @@ public class QuestionPage extends javax.swing.JFrame {
         jButton2.setEnabled(false);
         jButton3.setEnabled(false);
         jButton4.setEnabled(false);
+        
+        // Show the "Next Question" button
+        NextQuestion.setVisible(true);
 
         highlightCorrectAnswer(currentQuestion.getCorrectAnswer());
     }
 
-    /* ===================== UI HELPERS ===================== */
+    /* ===================== Hover Effect ===================== */
+    private void addHoverEffect(javax.swing.JButton btn) {
+        btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                // Only highlight if the button is still enabled (hasn't been clicked yet)
+                if (btn.isEnabled()) {
+                    btn.setBackground(new java.awt.Color(230, 230, 250)); // Change this to Lavender
+                }
+            }
 
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                // Only revert color if the button is enabled
+                // This prevents overwriting the Green/Red answer colors
+                if (btn.isEnabled()) {
+                    btn.setBackground(java.awt.Color.WHITE);
+                }
+            }
+        });
+    }
     /* ===================== BUTTON EVENTS ===================== */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -172,8 +213,6 @@ public class QuestionPage extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
-        jPanel8 = new javax.swing.JPanel();
-        jPanel9 = new javax.swing.JPanel();
         NextQuestion = new javax.swing.JButton();
         Return = new javax.swing.JButton();
 
@@ -370,64 +409,54 @@ public class QuestionPage extends javax.swing.JFrame {
         jPanel3.getAccessibleContext().setAccessibleName("jPanel3");
 
         jPanel4.setOpaque(false);
-        jPanel4.setLayout(new java.awt.BorderLayout());
 
+        NextQuestion.setBackground(new java.awt.Color(212, 228, 255));
+        NextQuestion.setFont(new java.awt.Font("Noto Sans SC", 1, 14)); // NOI18N
+        NextQuestion.setForeground(new java.awt.Color(74, 63, 107));
         NextQuestion.setText("Next Question");
+        NextQuestion.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        NextQuestion.setFocusPainted(false);
         NextQuestion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 NextQuestionActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
-        jPanel9.setLayout(jPanel9Layout);
-        jPanel9Layout.setHorizontalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
-                .addContainerGap(59, Short.MAX_VALUE)
-                .addComponent(NextQuestion)
-                .addGap(31, 31, 31))
-        );
-        jPanel9Layout.setVerticalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel9Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(NextQuestion)
-                .addContainerGap(36, Short.MAX_VALUE))
-        );
-
+        Return.setBackground(new java.awt.Color(212, 228, 255));
+        Return.setFont(new java.awt.Font("Noto Sans SC", 1, 14)); // NOI18N
+        Return.setForeground(new java.awt.Color(74, 63, 107));
         Return.setText("Return to Main Page");
+        Return.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        Return.setFocusPainted(false);
         Return.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ReturnActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
-        jPanel8.setLayout(jPanel8Layout);
-        jPanel8Layout.setHorizontalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                .addGap(55, 55, 55)
-                .addComponent(Return)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 292, Short.MAX_VALUE)
-                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(467, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Return, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(NextQuestion, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(83, 83, 83))
         );
-        jPanel8Layout.setVerticalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel8Layout.createSequentialGroup()
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addGap(32, 32, 32)
-                        .addComponent(Return))
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap(20, Short.MAX_VALUE)
+                .addComponent(NextQuestion, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(Return, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30))
         );
 
-        jPanel4.add(jPanel8, java.awt.BorderLayout.CENTER);
+        NextQuestion.getAccessibleContext().setAccessibleName("NextQuestion");
+        Return.getAccessibleContext().setAccessibleName("Return");
 
         jPanel1.add(jPanel4, java.awt.BorderLayout.SOUTH);
         jPanel4.getAccessibleContext().setAccessibleName("jPanel4");
@@ -459,9 +488,9 @@ public class QuestionPage extends javax.swing.JFrame {
     }//GEN-LAST:event_NextQuestionActionPerformed
 
     private void ReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReturnActionPerformed
-    StartPage start = new StartPage();
-    start.setVisible(true);
-    this.dispose();
+        StartPage start = new StartPage();
+        start.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_ReturnActionPerformed
 
     /**
@@ -509,8 +538,6 @@ public class QuestionPage extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextPane jTextPane1;
     // End of variables declaration//GEN-END:variables
