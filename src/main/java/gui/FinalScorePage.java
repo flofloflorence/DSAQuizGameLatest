@@ -10,10 +10,9 @@ public class FinalScorePage extends javax.swing.JFrame
     {
         initComponents();
         TotalScore.setText(score + " / " + total);
-        int percentage = (int)((score * 100.0) / total);
-     
-
-
+        int percentage = (total == 0) ? 0 : (int)((score * 100.0) / total);
+        TotalPercentage.setText("(" + percentage + "%)");
+        
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -151,26 +150,8 @@ public class FinalScorePage extends javax.swing.JFrame
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        QuestionQueue queue = new QuestionQueue(3);
-
-    queue.enqueue(new Question(
-        "What is the time complexity of binary search?",
-        "O(n)", "O(log n)", "O(n^2)", "O(1)", 1
-    ));
-
-    queue.enqueue(new Question(
-        "Which data structure follows FIFO?",
-        "Stack", "Tree", "Queue", "Graph", 2
-    ));
-
-    queue.enqueue(new Question(
-        "Which data structure uses LIFO?",
-        "Queue", "Stack", "Array", "Linked List", 1
-    ));
-
-    new StartPage().setVisible(true);
-    this.dispose();
-        
+        new StartPage().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

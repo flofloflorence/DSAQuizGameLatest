@@ -7,16 +7,16 @@ public class Question {
     private String optionB;
     private String optionC;
     private String optionD;
-    private int correctOption; // 1-4
+    private String correctAnswer; // 1-4
 
     public Question(String questionText, String optionA, String optionB,
-                        String optionC, String optionD, int correctOption) {
+                        String optionC, String optionD, String correctAnswer) {
         this.questionText = questionText;
         this.optionA = optionA;
         this.optionB = optionB;
         this.optionC = optionC;
         this.optionD = optionD;
-        this.correctOption = correctOption;
+        this.correctAnswer = correctAnswer;
     }
 
     public String getQuestionText() {
@@ -39,19 +39,8 @@ public class Question {
         return optionD; 
     }
     
-    public int getCorrectOption() { 
-        return correctOption; 
-    }
-
     public String getCorrectAnswer() 
     {
-        
-        return switch (correctOption) {
-            case 1 -> optionA;
-            case 2 -> optionB;
-            case 3 -> optionC;
-            case 4 -> optionD;
-            default -> "";
-        };
-}
+        return correctAnswer;
+    }
 }
