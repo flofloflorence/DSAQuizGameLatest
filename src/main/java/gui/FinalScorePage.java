@@ -1,8 +1,6 @@
 package gui;
 
-import javax.swing.ImageIcon;
-import model.Question;
-import structure.QuestionQueue;
+import dataSaving.FileManager;
 
 public class FinalScorePage extends javax.swing.JFrame 
 {
@@ -15,7 +13,9 @@ public class FinalScorePage extends javax.swing.JFrame
         TotalScore.setText(score + " / " + total);
         int percentage = (total == 0) ? 0 : (int)((score * 100.0) / total);
         TotalPercentage.setText("(" + percentage + "%)");
-        
+       
+        double percentageDouble = score * 100.0 / total;
+        FileManager.saveScore(username, score, total, percentageDouble);
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

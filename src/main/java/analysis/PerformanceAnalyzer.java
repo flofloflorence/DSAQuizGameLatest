@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package analysis;
 
 import model.Question;
@@ -9,11 +5,6 @@ import model.User;
 import structure.QuestionQueue;
 import structure.AnswerStack;
 import dataSaving.FileManager;
-
-/**
- *
- * @author Hp
- */
 
 public class PerformanceAnalyzer {
     // Run all required tests (call this once, e.g. from a menu button)
@@ -28,31 +19,30 @@ public class PerformanceAnalyzer {
     private static void testStack(int count) {
         AnswerStack stack = new AnswerStack(count);
         User[] users = new User[count];
-        // fill the array with N diff users
+        // Fill the array with N diff users
         for (int i = 0; i < count; i++) {
             users[i] = new User("User" + i);
         }
 
-        // measure add users to the stack
+        // Measure add users to the stack
         long startAdd = System.nanoTime();
         for (int i = 0; i < count; i++) {
-            stack.push(users[i].getUsername()); // store username on the stack
+            stack.push(users[i].getUsername()); // Store username on the stack
         }
         long endAdd = System.nanoTime();
 
-        // measure remove users from the stack
+        // Measure remove users from the stack
         long startRemove = System.nanoTime();
         for (int i = 0; i < count; i++) {
             stack.pop();
         }
         long endRemove = System.nanoTime();
 
-        // cal elapsed time
-        long addTimeNs = endAdd - startAdd; // total time to push N usernames to the stack
-        long removeTimeNs = endRemove - startRemove; // total time to remove N username from the stack
+        // Cal elapsed time
+        long addTimeNs = endAdd - startAdd; // Total time to push N usernames to the stack
+        long removeTimeNs = endRemove - startRemove; // Total time to remove N username from the stack
 
         System.out.println("Stack - " + count + " users: add = " + addTimeNs + "ns, remove = " + removeTimeNs + "ns");
-
         FileManager.savePerformance("Stack", count, addTimeNs, removeTimeNs);
     }
 
@@ -81,7 +71,6 @@ public class PerformanceAnalyzer {
         long removeTimeNs = endRemove - startRemove;
 
         System.out.println("Queue - " + count + " users: add = " + addTimeNs + "ns, remove = " + removeTimeNs + "ns");
-
         FileManager.savePerformance("Queue", count, addTimeNs, removeTimeNs);
     }
 }

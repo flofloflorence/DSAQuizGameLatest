@@ -1,17 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package structure;
 
 import model.Question;
 
-/**
- *
- * @author Hp
- */
-
-// storing questions in a queue data structure (FIFO)
+// Store questions in a queue data structure (FIFO)
+// Store users for performance analysis
 public class QuestionQueue {
         private Question[] data;
         private int front;

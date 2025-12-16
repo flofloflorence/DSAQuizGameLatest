@@ -1,22 +1,20 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package gui;
 
-/**
- *
- * @author Sheryll Guay
- */
+import model.UserManager;
+import javax.swing.JOptionPane;
+import java.util.logging.Level;
+
 public class RegisterPage extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(RegisterPage.class.getName());
-
+    private final UserManager userManager;
+    
     /**
      * Creates new form RegisterPage
      */
     public RegisterPage() {
         initComponents();
+        userManager = UserManager.getInstance();
     }
 
     /**
@@ -229,9 +227,43 @@ public class RegisterPage extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // Need to change this code to show a pop-up window informing "Registration is successful!"
         // Then only after clicking the "Ok" button, will the Login Page be shown
-        LoginPage login = new LoginPage();
-        login.setVisible(true);
-        this.dispose();
+        try {
+            // Get values from fields
+            String username = jTextField1.getText();
+            String password = new String(jPasswordField1.getPassword());
+            String confirmPassword = new String(jPasswordField2.getPassword());
+
+            // Validate inputs
+            if (username.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please enter username");
+                return;
+            }
+            if (password.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please enter password");
+                return;
+            }
+            if (!password.equals(confirmPassword)) {
+                JOptionPane.showMessageDialog(this, "Passwords do not match");
+                return;
+            }
+           
+            // Register
+            String registerResult = userManager.register(username, password);
+
+            if (registerResult.equals("Registration successful")) {
+                JOptionPane.showMessageDialog(this, "Registration successful!");
+                // Return to login screen
+                LoginPage login = new LoginPage();
+                login.setVisible(true);
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, registerResult, "Registration Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Error during registration", e);
+            JOptionPane.showMessageDialog(this, "An error occurred during registration");
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked

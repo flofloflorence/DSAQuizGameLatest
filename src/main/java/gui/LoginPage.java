@@ -1,22 +1,20 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package gui;
 
-/**
- *
- * @author Sheryll Guay
- */
+import model.UserManager;
+import javax.swing.JOptionPane; // Pop up a standard dialog box
+import java.util.logging.Level; // Have different logging levels (severity) of log messages
+
 public class LoginPage extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginPage.class.getName());
+    private final UserManager userManager; // Add UserManager instance
 
     /**
      * Creates new form LoginPage
      */
     public LoginPage() {
         initComponents();
+        userManager = UserManager.getInstance(); 
     }
 
     /**
@@ -197,26 +195,29 @@ public class LoginPage extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // Need to change this code to show a pop-up window informing "Login is successful!"
         // Then only after clicking the "Ok" button, will the Start Page be shown
-        String username = jTextField1.getText().trim();
-        if (username.isEmpty()) {
-        javax.swing.JOptionPane.showMessageDialog(
-        this,
-        "Please enter your username",
-        "Error",
-        javax.swing.JOptionPane.ERROR_MESSAGE
-         );
-        return;
+        try {
+            // Get username and password from fields
+            String username = jTextField1.getText().trim();
+//            char[] passChars = jPasswordField1.getPassword();
+            String password = new String(jPasswordField1.getPassword());
+
+            // Attempt login
+            String loginResult = userManager.login(username, password);
+
+            if (loginResult.equals("Login successful")){
+                // Show success message * this: current window
+                JOptionPane.showMessageDialog(this, "Login successful!");
+                StartPage start = new StartPage(username);
+                start.setVisible(true);
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, loginResult, "Login Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Error during login", e);
+            JOptionPane.showMessageDialog(this, "An error occurred during login");
         }
-        javax.swing.JOptionPane.showMessageDialog(
-        this,
-        "Login successful!",
-        "Welcome",
-        javax.swing.JOptionPane.INFORMATION_MESSAGE
-        );
-        
-        StartPage start = new StartPage(username);
-        start.setVisible(true);
-        this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked

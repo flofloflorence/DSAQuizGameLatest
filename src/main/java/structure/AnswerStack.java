@@ -1,5 +1,7 @@
-
 package structure;
+
+// Store answers in a stack data structure (LIFO)
+// Store users for performance analysis
 public class AnswerStack {
     private String[] answers;
     private int top;

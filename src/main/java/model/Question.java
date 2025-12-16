@@ -1,13 +1,12 @@
-
 package model;
 
 public class Question {
-    private String questionText; // stores questions
+    private String questionText; // Store question
     private String optionA;
     private String optionB;
     private String optionC;
     private String optionD;
-    private String correctAnswer; // 1-4
+    private String correctAnswer; 
 
     public Question(String questionText, String optionA, String optionB,
                         String optionC, String optionD, String correctAnswer) {
