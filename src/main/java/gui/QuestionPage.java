@@ -287,7 +287,7 @@ public class QuestionPage extends javax.swing.JFrame {
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(3, 3, 3)
                 .addComponent(TotalQuesNum, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 266, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 269, Short.MAX_VALUE)
                 .addComponent(jLabelTimer, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(65, 65, 65))
         );
@@ -348,7 +348,10 @@ public class QuestionPage extends javax.swing.JFrame {
         jButton1.setFocusPainted(false);
         jButton1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jButton1.setIconTextGap(10);
+        jButton1.setMaximumSize(new java.awt.Dimension(250, 30));
+        jButton1.setMinimumSize(new java.awt.Dimension(60, 30));
         jButton1.setOpaque(true);
+        jButton1.setPreferredSize(new java.awt.Dimension(250, 30));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -363,7 +366,10 @@ public class QuestionPage extends javax.swing.JFrame {
         jButton2.setFocusPainted(false);
         jButton2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jButton2.setIconTextGap(10);
+        jButton2.setMaximumSize(new java.awt.Dimension(250, 30));
+        jButton2.setMinimumSize(new java.awt.Dimension(60, 30));
         jButton2.setOpaque(true);
+        jButton2.setPreferredSize(new java.awt.Dimension(250, 30));
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -378,7 +384,10 @@ public class QuestionPage extends javax.swing.JFrame {
         jButton3.setFocusPainted(false);
         jButton3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jButton3.setIconTextGap(10);
+        jButton3.setMaximumSize(new java.awt.Dimension(250, 30));
+        jButton3.setMinimumSize(new java.awt.Dimension(60, 30));
         jButton3.setOpaque(true);
+        jButton3.setPreferredSize(new java.awt.Dimension(250, 30));
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -393,7 +402,10 @@ public class QuestionPage extends javax.swing.JFrame {
         jButton4.setFocusPainted(false);
         jButton4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jButton4.setIconTextGap(10);
+        jButton4.setMaximumSize(new java.awt.Dimension(250, 30));
+        jButton4.setMinimumSize(new java.awt.Dimension(60, 30));
         jButton4.setOpaque(true);
+        jButton4.setPreferredSize(new java.awt.Dimension(250, 30));
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
