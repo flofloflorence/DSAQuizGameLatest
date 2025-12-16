@@ -33,10 +33,12 @@ public class FileManager {
             String line;
             while ((line = br.readLine()) != null) {
                 line = line.trim();
-                if (line.isEmpty() || line.startsWith("#")) continue;
+                if (line.isEmpty() || line.startsWith("#")) 
+                    continue;
 
                 String[] p = line.split(";", -1);
-                if (p.length != 2) continue;
+                if (p.length != 2) 
+                    continue;
 
                 String username = p[0].trim();
                 String password = p[1].trim();
@@ -50,7 +52,7 @@ public class FileManager {
         return users;
     }
     
-    // 2. Load Questions (The Correct New Version)
+    // 2. Load Questions
     public static List<Question> loadQuestions() {
         List<Question> list = new ArrayList<>();
         File f = new File(QUESTIONS_FILE);
@@ -97,9 +99,9 @@ public class FileManager {
     }
 
     // 4. Save performance analysis
-    public static void savePerformance(String structureName, int count, long addTimeNs, long removeTimeNs) {
+    public static void savePerformance(String structureName, int amount, long totalAddTime, long totalRemoveTime) {
         try (FileWriter fw = new FileWriter(PERFORMANCE_FILE, true)) {
-            fw.write(LocalDateTime.now() + ", " + structureName + ", " + count + ", add = " + addTimeNs + "ns, remove = " + removeTimeNs + "ns\n");
+            fw.write(LocalDateTime.now() + ", " + structureName + ", " + amount + ", add = " + totalAddTime + "ns, remove = " + totalRemoveTime + "ns\n");
         } catch (IOException e) {
             System.out.println("Unable to save performance.");
         }

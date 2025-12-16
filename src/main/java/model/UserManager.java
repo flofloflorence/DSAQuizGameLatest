@@ -33,15 +33,12 @@ public class UserManager {
         System.out.println("Attempting to login user: " + username);
         
         try {
-            // Check for null values
             if (username == null || password == null)
                 return "Invalid input: null values are not allowed";
 
-            // Check for empty values
             if (username.trim().isEmpty() || password.trim().isEmpty())
                 return "Please fill in all fields";
 
-            // Iterate through the user list one by one
             for (User user : users) {
                 if (user.getUsername().equals(username)) {
                     if (user.getPassword().equals(password)) {
@@ -54,7 +51,7 @@ public class UserManager {
             return "Username not found";
             
         } catch (Exception e) {
-            System.err.println("Error in login: " + e.getMessage()); // Print error messages
+            System.err.println("Error in login: " + e.getMessage());
             return "Login failed due to system error";
         }
     }
@@ -64,31 +61,26 @@ public class UserManager {
         System.out.println("Attempting to register user: " + username);
 
         try {
-            // Check for null values
             if (username == null || password == null) 
                 return "Invalid input: null values are not allowed";
 
-            // Check for empty values
             if (username.trim().isEmpty() || password.trim().isEmpty())
                 return "Please fill in all fields";
 
-            // Check username length
             if (username.length() > 30)
                 return "Username is too long (maximum 30 characters)";
             
-            // Check password length
             if (password.length() <= 6)
                 return "Password must be more than 6 characters long";
             
-            // Check if username exists
             for (User user : users) {
                 if (user.getUsername().equals(username))
                     return "Username already exists";
             }
 
             // Create new user
-            User newUser = new User(username, password); // Create user object
-            users.add(newUser); // Add the new user object to the list
+            User newUser = new User(username, password); 
+            users.add(newUser); 
             FileManager.saveUser(username, password);
             return "Registration successful";
             
@@ -105,7 +97,6 @@ public class UserManager {
     
     // Logout operation
     public void logout(){
-        // Reset the currentUser variable so it no longer points to any User object
         currentUser = null; 
     }
 }
