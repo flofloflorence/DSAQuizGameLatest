@@ -74,17 +74,17 @@ public class FinalScorePage extends javax.swing.JFrame
         TotalScore.setFont(new java.awt.Font("Noto Sans SC", 0, 18)); // NOI18N
         TotalScore.setForeground(new java.awt.Color(44, 62, 80));
         TotalScore.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        TotalScore.setText("8/10");
-        TotalScore.setPreferredSize(new java.awt.Dimension(50, 35));
+        TotalScore.setText("10/10");
+        TotalScore.setPreferredSize(new java.awt.Dimension(60, 35));
         jPanel2.add(TotalScore);
         TotalScore.getAccessibleContext().setAccessibleName("TotalScore");
 
         TotalPercentage.setFont(new java.awt.Font("Noto Sans SC", 0, 18)); // NOI18N
         TotalPercentage.setForeground(new java.awt.Color(44, 62, 80));
-        TotalPercentage.setText("(80%)");
+        TotalPercentage.setText("(100%)");
         TotalPercentage.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
         TotalPercentage.setMaximumSize(new java.awt.Dimension(50, 35));
-        TotalPercentage.setPreferredSize(new java.awt.Dimension(55, 35));
+        TotalPercentage.setPreferredSize(new java.awt.Dimension(60, 35));
         jPanel2.add(TotalPercentage);
         TotalPercentage.getAccessibleContext().setAccessibleName("TotalPercentage");
 
