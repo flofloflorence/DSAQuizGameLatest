@@ -104,7 +104,7 @@ public class QuestionPage extends javax.swing.JFrame {
         {
             clickedButton.setBackground(Color.GREEN);
             score++;
-            System.out.println("✅ Correct! Score now = " + score);
+            System.out.println("Correct! Score now = " + score);
         } 
         else 
         {
